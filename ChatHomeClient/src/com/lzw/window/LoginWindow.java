@@ -95,7 +95,6 @@ public class LoginWindow extends JFrame{
 			try {
 				 //获取客户端链接
 				 client = new Socket(serverAddress,port);
-				 //printstram = new PrintStream(client.getOutputStream());
 				 scanner = new Scanner(client.getInputStream());
 				
 				//获取对象io流     先创建输出流 在创建输入流  否则会出现死锁

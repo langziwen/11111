@@ -8,7 +8,7 @@ public class PrivatePersonChat implements Serializable{
 	private String Message;
 	private Integer num;
 	
-    public Integer getNum() {
+	public Integer getNum() {
 		return num;
 	}
 
@@ -19,7 +19,7 @@ public class PrivatePersonChat implements Serializable{
 	public PrivatePersonChat(){
 		
 	}
-
+	
 	public PrivatePersonChat(String messageFromUser, String messageToUser, String message) {
 		super();
 		MessageFromUser = messageFromUser;

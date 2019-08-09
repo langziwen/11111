@@ -7,11 +7,11 @@ public class DBUtil {
 	//驱动程序名
 	static String driver = "com.mysql.jdbc.Driver";
 	//URL指向要访问的数据库名mydata
-	static String url = "jdbc:mysql://localhost:3306/serverchat?characterEncoding=UTF-8";
+	static String url = "jdbc:mysql://localhost:3306/test?characterEncoding=UTF-8";
 	//MySQL配置时的用户名
 	static String user = "root";
 	//MySQL配置时的密码
-	static String password = "root";
+	static String password = "langziwen123";
 	
 	static{
 		try {

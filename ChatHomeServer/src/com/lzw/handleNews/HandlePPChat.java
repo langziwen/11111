@@ -1,12 +1,12 @@
 package com.lzw.handleNews;
 
 import java.io.IOException;
-import java.io.PrintStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.List;
 import java.util.Map;
-
 import com.lzw.newsbean.PrivatePersonChat;
+import com.lzw.tool.MyOutputStream;
 
 public class HandlePPChat implements Runnable{
 	
@@ -25,14 +25,13 @@ public class HandlePPChat implements Runnable{
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
+		
 		while(true){
 			synchronized (ppChatLock) {
 				if(ppcList.size()==0){
 					try {
 						ppChatLock.wait();
 					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
@@ -41,19 +40,25 @@ public class HandlePPChat implements Runnable{
 			if(ppcList.size() != 0){
 				PrivatePersonChat ppChat = ppcList.get(0);
 				ppcList.remove(0);
-				String fromUser = ppChat.getMessageFromUser();
+				//获取对应的socket链接
 				String ToUser = ppChat.getMessageToUser();
-				String message = ppChat.getMessage();
 				Socket client = mapSocket.get(ToUser);
-				PrintStream printStream = null;
+				ObjectOutputStream objectOutputStream = null;
+				MyOutputStream myStream = null;
 				try {
-					printStream = new PrintStream(client.getOutputStream());
+					if(ppChat.getNum() == 0){
+						//第一次写入
+						objectOutputStream = new ObjectOutputStream(client.getOutputStream());
+						objectOutputStream.writeObject(ppChat);
+					}else{
+						myStream = new MyOutputStream(client.getOutputStream());
+						myStream.writeObject(ppChat);
+					}
+					
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				String strToUser = "GetPrivatePersonChat#"+fromUser+"#"+ToUser+"#"+message;
-				printStream.println(strToUser);
+				
 			}
 		}
 	}

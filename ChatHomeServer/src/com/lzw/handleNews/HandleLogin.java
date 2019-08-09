@@ -49,18 +49,16 @@ public class HandleLogin implements Runnable{
 				LoginNew loginNew = listLoginNews.get(0);
 				listLoginNews.remove(0);
 				String userName = loginNew.getUserName();
-				System.out.println("username:"+userName);
 				Socket socket = loginNew.getSocket();
 				PrintStream printStream = null;
 				try {
 					printStream = new PrintStream(socket.getOutputStream(),true);
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				
 				 Connection conn = DBUtil.getConnection();
-				 String sql = "select * from user where username = ?";
+				 String sql = "select * from sys_user where username = ?";
 				 Object uname = userName;
 				 ResultSet rs = DBUtil.executeQuery(conn,sql,uname);
 				 
@@ -86,12 +84,12 @@ public class HandleLogin implements Runnable{
 					
 					//查询用户好友列表信息并发送到客户端
 					List<User> userFriends = new ArrayList<User>();
-					sql = "select B.id,B.nickname,B.username,B.password,B.state,B.regdate from (select * from friend where u_id = ?) AS A left join user AS B on friend_id = id;";
+					sql = "select B.id,B.nickname,B.username,B.password,B.state,B.regdate from (select * from friend where u_id = ?) AS A left join sys_user AS B on friend_id = id;";
 					rs = DBUtil.executeQuery(conn,sql,id);
 					
 				    try {
 						while(rs.next()){
-							User temp_user = new User(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getInt(5),rs.getString(6));
+							User temp_user = new User(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getInt(5),rs.getDate(6));
 							userFriends.add(temp_user);
 						}
 					} catch (SQLException e) {

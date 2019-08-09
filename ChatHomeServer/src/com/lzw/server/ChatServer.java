@@ -68,13 +68,11 @@ public class ChatServer {
 			}
 			
 			try {
-				//scannerReadUser = new Scanner(socket.getInputStream());
 				oi = new ObjectInputStream(socket.getInputStream());
 				os = new ObjectOutputStream(socket.getOutputStream());
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			//String firstMsg = scannerReadUser.nextLine();
 			
 			Object ob = null;
 			try {
@@ -99,7 +97,6 @@ public class ChatServer {
 				try {
 					Thread.sleep(1000);
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				

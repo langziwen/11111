@@ -1,20 +1,21 @@
 package com.lzw.jdbcbean;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class User implements Serializable{
-	private Integer id;
+	private String id;
 	private String nickname;
 	private String username;
 	private String password;
 	private Integer state;
-	private String regdate;
+	private Date regdate;
 	
 	public User(){
 		
 	}
 	
-	public User(Integer id, String nickname, String username, String password, Integer state, String regdate) {
+	public User(String id, String nickname, String username, String password, Integer state, Date regdate) {
 		super();
 		this.id = id;
 		this.nickname = nickname;
@@ -24,11 +25,11 @@ public class User implements Serializable{
 		this.regdate = regdate;
 	}
 
-	public Integer getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -64,11 +65,11 @@ public class User implements Serializable{
 		this.state = state;
 	}
 
-	public String getRegdate() {
+	public Date getRegdate() {
 		return regdate;
 	}
 
-	public void setRegdate(String regdate) {
+	public void setRegdate(Date regdate) {
 		this.regdate = regdate;
 	}
 }

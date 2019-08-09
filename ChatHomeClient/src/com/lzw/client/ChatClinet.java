@@ -15,6 +15,7 @@ import com.lzw.handleNews.HandlViewPChat;
 import com.lzw.handleNews.HandleServer;
 import com.lzw.jdbcbean.User;
 import com.lzw.newsbean.LoginMessage;
+import com.lzw.newsbean.PrivatePersonChat;
 import com.lzw.newsbean.ViewPChat;
 import com.lzw.prothread.ProPCView;
 import com.lzw.window.LoginWindow;
@@ -42,7 +43,6 @@ public class ChatClinet{
 			try {
 				loginWinLock.wait();
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -56,10 +56,8 @@ public class ChatClinet{
 			oi = new ObjectInputStream(client.getInputStream());
 			obj = oi.readObject();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -80,7 +78,7 @@ public class ChatClinet{
 		Map<String,Object> mapLock = new HashMap<String,Object>();
 		
 		//启动接收私聊消息的线程并创建消息队列
-		List<ViewPChat> listViewPChat = new ArrayList<>(); 
+		List<PrivatePersonChat> listViewPChat = new ArrayList<>(); 
 		Object viewPCLock = new Object();
 		mapList.put("listViewPChat",listViewPChat);
 		mapLock.put("viewPCLock",viewPCLock);

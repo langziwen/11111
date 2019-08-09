@@ -5,17 +5,16 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.io.PrintStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
-import javax.swing.text.BadLocationException;
-
+import com.lzw.newsbean.PrivatePersonChat;
+import com.lzw.tool.MyOutputStream;
 import com.lzw.tool.UserUtil;
 
 public class PCView extends JFrame{
@@ -24,7 +23,9 @@ public class PCView extends JFrame{
 	private String nickname;
 	private String username;
 	private Socket client;
-	
+	private ObjectOutputStream oi;
+	private MyOutputStream oi2;
+	private Integer num;
 	//创建内部类，按钮监听事件
 	private class SendListener implements ActionListener{
 		
@@ -37,20 +38,27 @@ public class PCView extends JFrame{
 		}
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
 			String jta2_str = null;
 			jta2_str = jta2.getText();
 			jta1Append(jta2_str);
 			
-			String send_str = "PrivatePersonChat#"+UserUtil.getUserName()+"#"+username+"#"+jta2_str;
-			PrintStream printstream = null;
+			PrivatePersonChat temp = new PrivatePersonChat();
+			temp.setMessageFromUser(UserUtil.getUserName());
+			temp.setMessageToUser(username);
+			temp.setMessage(jta2_str);
+			
 			try {
-				printstream = new PrintStream(client.getOutputStream());
+				if(num != 0){
+					//不是第一次写入，避免追加文件头
+					oi2.writeObject(temp);
+				}else{
+					oi.writeObject(temp);
+					num ++;
+				}
+				
 			} catch (IOException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			printstream.println(send_str);
 		}
 		
 	}
@@ -112,18 +120,26 @@ public class PCView extends JFrame{
 		this.setLocation(200, 200);			//设置界面初始位置
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);	//设置虚拟机和界面一同关闭
 		this.setVisible(true);				//设置界面可视化
+		
+		//记录第几次写入数据
+		num = 0;
+		try {
+			//获取常规对象输出流
+			oi = new ObjectOutputStream(client.getOutputStream());
+			//自定义输出流
+			oi2 = new MyOutputStream(client.getOutputStream());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public synchronized void jta1Append(String str){
+		str = str + "\n";
 		jta1.append(str);
+		//清空发送信息的面板
+		jta2.setText("");
 	}
 }
-
-
-
-
-
-
 
 
 
