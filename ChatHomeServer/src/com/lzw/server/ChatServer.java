@@ -1,6 +1,7 @@
 package com.lzw.server;
 
 import java.io.IOException;
+
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
@@ -11,14 +12,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 import com.lzw.handleNews.HandleLogin;
 import com.lzw.handleNews.HandlePPChat;
 import com.lzw.newsbean.*;
+import com.lzw.tool.SpringApplication;
 
 public class ChatServer {
 	
 	public static void main(String[]args){
 		
+		//初始化spring容器
+		ApplicationContext ctx=new ClassPathXmlApplicationContext("classpath:resource/ApplicationContext.xml");
+		SpringApplication.setApplicationContext(ctx);
 		
 		//存取用户信息和socket对象
 		Map<String,Socket> mapSocket = new HashMap<String,Socket>();

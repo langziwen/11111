@@ -59,7 +59,6 @@ public class MainWindow extends JFrame{
 		
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
 			PCView temp_view = new PCView(nickname,username,client);
 			proPCView.put(username,temp_view);
 		}
